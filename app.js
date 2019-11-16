@@ -1,11 +1,12 @@
 const canvas = document.getElementById("jsCanvas"); //canvas is element from HTML5
 const ctx = canvas.getContext("2d"); // use pixel
+const colors = document.getElementsByClassName("jsColor");
 
 //canvas have 2 element of size, give 'pixel modifier'
 canvas.width = 500;
 canvas.height = 500;
 
-ctx.strokeStyle = "#2c2c2c"; // color of line
+ctx.strokeStyle = "#2c2c2c"; // default color is black
 ctx.lineWidth = 2.5;
 
 let painting = false;
@@ -30,12 +31,18 @@ function onMouseMove(event){
     }
 }
 
-function onMouseDown(event){
-    painting = true;
-}
+// function onMouseDown(event){
+//     painting = true;
+// }
 
 function onMouseLeave(event){
     painting = false;
+}
+
+function handleColorClick(event){
+    const color = event.target.style.backgroundColor;
+    ctx.strokeStyle = color; //override strokeStyle
+    //console.log(color);
 }
 
 if(canvas){
@@ -44,3 +51,5 @@ if(canvas){
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
 }
+
+Array.from(colors).forEach(color => color.addEventListener("click", handleColorClick));
