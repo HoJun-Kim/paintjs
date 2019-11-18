@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d"); // use pixel
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
 
 const INITIAL_COLOR = "#2c2c2c";
 
@@ -10,6 +11,8 @@ const INITIAL_COLOR = "#2c2c2c";
 canvas.width = 500;
 canvas.height = 500;
 
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, 500, 500); //default background color to canvas
 ctx.strokeStyle = INITIAL_COLOR; // default color is black
 ctx.fillStyle = INITIAL_COLOR; //initialize fill color
 ctx.lineWidth = 2.5;
@@ -64,6 +67,11 @@ if(canvas){
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
     canvas.addEventListener("click", handleCanvasClick);
+    canvas.addEventListener("contextmenu", handleCM); 
+}
+
+function handleCM(event){
+    event.preventDefault(); //stop right click 
 }
 
 function handelRangeChange(event){
@@ -83,6 +91,14 @@ function handleModeClick(){
     }
 }
 
+function handleSaveClick(){
+    const image = canvas.toDataURL("image/png"); //확장자 설정
+    const link = document.createElement("a"); //anchor
+    link.href = image; // href has to URL(확장자)
+    link.download = "PaintJS"; //download is attribute from anchor("a") tag. not going link, download/(파일명)
+    link.click(); //가짜로 클릭을 만든것.
+}
+
 Array.from(colors).forEach(color => color.addEventListener("click", handleColorClick));
 
 if(range){
@@ -91,4 +107,8 @@ if(range){
 
 if(mode){
     mode.addEventListener("click",handleModeClick);
+}
+
+if(saveBtn){
+    saveBtn.addEventListener("click", handleSaveClick);
 }
